@@ -48,6 +48,8 @@ module ag.grid {
         groupSuppressBlankHeader?: boolean;
         forPrint?: boolean;
         groupColumnDef?: any; // change to typed
+        customAttrSelectRowOnKeyNavigation?: boolean;
+        customAttrMockCtrlClick?: boolean;
 
         // changeable, but no immediate impact
         context?: any;

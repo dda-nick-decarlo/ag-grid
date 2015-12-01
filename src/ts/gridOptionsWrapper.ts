@@ -99,6 +99,8 @@ module ag.grid {
         public getRowHeight() { return this.rowHeight; }
         public getOverlayLoadingTemplate() { return this.gridOptions.overlayLoadingTemplate; }
         public getOverlayNoRowsTemplate() { return this.gridOptions.overlayNoRowsTemplate; }
+        public isSelectRowOnKeyNavigation() { return isTrue(this.gridOptions.customAttrSelectRowOnKeyNavigation); }
+        public isMockCtrlClick() { return isTrue(this.gridOptions.customAttrMockCtrlClick); }
 
         // properties
         public getHeaderHeight(): number {

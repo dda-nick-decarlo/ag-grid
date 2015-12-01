@@ -436,6 +436,10 @@ module ag.grid {
 
             // this changes the css on the cell
             this.focusCell(eCell, cellToFocus.rowIndex, cellToFocus.column.index, cellToFocus.column.colDef, true);
+
+            if (this.gridOptionsWrapper.isSelectRowOnKeyNavigation()) {
+                this.selectionController.selectIndex(cellToFocus.rowIndex, false, false);
+            }
         }
 
         private getNextCellToFocus(key: any, lastCellToFocus: any) {
