@@ -79,6 +79,9 @@ module ag.grid {
             } else {
                 _.addCssClass(this.eHeaderCell, 'ag-header-cell-not-grouped'); // this takes 100% height
             }
+            if (this.gridOptionsWrapper.isEnableSorting() && !this.column.colDef.suppressSorting) {
+                _.addCssClass(this.eHeaderCell, 'ag-header-cell-sortable');
+            }
         }
 
         private addMenu(): void {
