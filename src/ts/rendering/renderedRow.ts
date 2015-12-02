@@ -375,7 +375,7 @@ module ag.grid {
                 that.eventService.dispatchEvent(Events.EVENT_ROW_CLICKED, agEvent);
 
                 // ctrlKey for windows, metaKey for Apple
-                var multiSelectKeyPressed = event.ctrlKey || event.metaKey || this.gridOptionsWrapper.isMockCtrlClick();
+                var multiSelectKeyPressed = event.ctrlKey || event.metaKey || that.gridOptionsWrapper.isMockCtrlClick();
                 that.angularGrid.onRowClicked(multiSelectKeyPressed, that.rowIndex, that.node);
             });
             vRow.addEventListener("dblclick", function (event: any) {
