@@ -1,60 +1,44 @@
+import {Grid} from "./grid";
+import {Bean} from "./context/context";
+import {GridCore} from "./gridCore";
+import {Qualifier} from "./context/context";
+import {SelectionController} from "./selectionController";
+import {RowNode} from "./entities/rowNode";
+import {RenderedRow} from "./rendering/renderedRow";
+import {Utils as _} from './utils';
 
-module ag.grid {
+@Bean('selectionRendererFactory')
+export class SelectionRendererFactory {
 
-    export class SelectionRendererFactory {
+    public createSelectionCheckbox(rowNode: RowNode, addRenderedRowEventListener: Function) {
 
-        private angularGrid: any;
-        private selectionController: any;
+        var eCheckbox = document.createElement('input');
+        eCheckbox.type = "checkbox";
+        eCheckbox.name = "name";
+        eCheckbox.className = 'ag-selection-checkbox';
+        _.setCheckboxState(eCheckbox, rowNode.isSelected());
 
-        public init(angularGrid: any, selectionController: any) {
-            this.angularGrid = angularGrid;
-            this.selectionController = selectionController;
-        }
+        eCheckbox.addEventListener('click', event => event.stopPropagation() );
 
-        public createSelectionCheckbox(node: any, rowIndex: any) {
+        eCheckbox.addEventListener('change', () => {
+            var newValue = eCheckbox.checked;
+            if (newValue) {
+                rowNode.setSelected(newValue);
+            } else {
+                rowNode.setSelected(newValue);
+            }
+        });
 
-            var eCheckbox = document.createElement('input');
-            eCheckbox.type = "checkbox";
-            eCheckbox.name = "name";
-            eCheckbox.className = 'ag-selection-checkbox';
-            setCheckboxState(eCheckbox, this.selectionController.isNodeSelected(node));
+        var selectionChangedCallback = ()=> _.setCheckboxState(eCheckbox, rowNode.isSelected());
+        rowNode.addEventListener(RowNode.EVENT_ROW_SELECTED, selectionChangedCallback);
 
-            var that = this;
-            eCheckbox.onclick = function (event) {
-                event.stopPropagation();
-            };
+        addRenderedRowEventListener(RenderedRow.EVENT_RENDERED_ROW_REMOVED, () => {
+            rowNode.removeEventListener(RowNode.EVENT_ROW_SELECTED, selectionChangedCallback);
+        });
 
-            eCheckbox.onchange = function () {
-                var newValue = eCheckbox.checked;
-                if (newValue) {
-                    that.selectionController.selectIndex(rowIndex, true);
-                } else {
-                    that.selectionController.deselectIndex(rowIndex);
-                }
-            };
-
-            this.angularGrid.addVirtualRowListener(rowIndex, {
-                rowSelected: function (selected: any) {
-                    setCheckboxState(eCheckbox, selected);
-                },
-                rowRemoved: function () {
-                }
-            });
-
-            return eCheckbox;
-        }
+        return eCheckbox;
     }
 
-    function setCheckboxState(eCheckbox: any, state: any) {
-        if (typeof state === 'boolean') {
-            eCheckbox.checked = state;
-            eCheckbox.indeterminate = false;
-        } else {
-            // isNodeSelected returns back undefined if it's a group and the children
-            // are a mix of selected and unselected
-            eCheckbox.indeterminate = true;
-        }
-    }
+
 
 }
-
